@@ -28,14 +28,14 @@ private:
   Node *remover(Node *node, int numero);
   Node *menorValor(Node *node);
   bool pesquisar(Node *node, int numero);
-  void ordenar(Node *node);
+  void mostrar(Node *node);
 
 public:
   ArvoreAVL();
   void inserir(int numero);
   void remover(int numero);
   bool pesquisar(int numero);
-  void ordenar();
+  void mostrar();
 };
 
 #endif
