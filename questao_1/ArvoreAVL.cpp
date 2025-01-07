@@ -1,4 +1,5 @@
 #include "ArvoreAVL.h"
+#include <stack>
 
 // Retorna a altura de um nó
 int ArvoreAVL::altura(Node *node) { return node ? node->altura : 0; }
@@ -136,12 +137,50 @@ bool ArvoreAVL::pesquisar(Node *node, int numero) {
 }
 
 // Imprime a árvore em ordem
-void ArvoreAVL::ordenar(Node *node) {
-  if (node) {
-    ordenar(node->esquerda);
-    cout << node->numero << " ";
-    ordenar(node->direita);
+void ArvoreAVL::mostrar(Node *node) {
+  if (!node) {
+    cout << "Árvore vazia." << endl;
+    return;
   }
+  
+  stack<Node*> pilhaGlobal;
+  pilhaGlobal.push(node);
+  int nVazios = 32;
+  bool linhaVazia = false;
+  cout << endl;
+  while(linhaVazia==false){
+    stack<Node*> pilhaLocal;
+    linhaVazia = true;
+    
+    for(int j=0; j<nVazios; j++)
+      cout << ' ';
+    
+    while(pilhaGlobal.empty()==false){
+      Node* temp = pilhaGlobal.top();
+      pilhaGlobal.pop();
+      if(temp != NULL){
+        cout << temp->numero;
+        pilhaLocal.push(temp->esquerda);
+        pilhaLocal.push(temp->direita);
+        
+        if(temp->esquerda != NULL || temp->direita != NULL)
+          linhaVazia = false;
+      } else{
+        cout << "--";
+        pilhaLocal.push(NULL);
+        pilhaLocal.push(NULL);
+      }
+      for(int j=0; j<nVazios*2-2; j++)
+        cout << ' ';
+    }
+    cout << endl;
+    nVazios = nVazios/2;
+    while(pilhaLocal.empty()==false){
+      pilhaGlobal.push( pilhaLocal.top() );
+      pilhaLocal.pop();
+    }
+  }  
+  cout << endl;
 }
 
 ArvoreAVL::ArvoreAVL() : raiz(nullptr) {}
@@ -152,7 +191,7 @@ void ArvoreAVL::remover(int numero) { raiz = remover(raiz, numero); }
 
 bool ArvoreAVL::pesquisar(int numero) { return pesquisar(raiz, numero); }
 
-void ArvoreAVL::ordenar() {
-  ordenar(raiz);
+void ArvoreAVL::mostrar() {
+  mostrar(raiz);
   cout << endl;
 }
